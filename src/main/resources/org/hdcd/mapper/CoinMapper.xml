@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.hdcd.mapper.CoinMapper">
+
+	<insert id="create">
+		INSERT INTO charge_coin_history
+			 (
+			   user_no,
+			   amount
+			 )
+		VALUES
+			 (
+			   #{userNo},
+			   #{amount}
+			 )
+	</insert>
+
+	<update id="charge">
+		UPDATE member
+		   SET coin = (coin + #{amount}),
+			   upd_date = now()
+		 WHERE user_no = #{userNo}
+	</update>
+
+	<select id="list" resultType="ChargeCoin">
+		<![CDATA[
+		SELECT history_no,
+			   user_no,
+			   amount,
+			   reg_date
+		  FROM charge_coin_history
+		 WHERE history_no > 0
+		   AND user_no = #{userNo}
+	  ORDER BY history_no DESC
+		]]>
+	</select>
+	
+	<insert id="createPayHistory">
+		INSERT INTO pay_coin_history
+			 (
+			   user_no,
+			   item_id,
+			   amount
+			 )
+		VALUES
+			 (
+			   #{userNo},
+			   #{itemId},
+			   #{amount}
+			 )
+	</insert>
+
+	<update id="pay">
+		UPDATE member
+		   SET coin = (coin - #{amount}),
+			   upd_date = now()
+		 WHERE user_no = #{userNo}
+	</update>
+
+	<select id="listPayHistory" resultType="PayCoin">
+		<![CDATA[
+		SELECT a.history_no,
+			   a.user_no,
+			   a.item_id,
+			   b.item_name,
+			   a.amount,
+			   a.reg_date
+		  FROM pay_coin_history a INNER JOIN item b ON a.item_id = b.item_id
+		 WHERE a.history_no > 0
+		   AND user_no = #{userNo}
+	  ORDER BY a.history_no DESC
+		]]>
+	</select>	
+	
+</mapper>

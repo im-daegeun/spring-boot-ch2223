@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.hdcd.mapper.CodeMapper">
+
+	<select id="getCodeGroupList" resultType="org.hdcd.common.domain.CodeLabelValue">
+		SELECT group_code AS value,
+			   group_name AS label
+		  FROM code_group
+		 WHERE use_yn = 'Y'
+	  ORDER BY group_name
+	</select>
+
+	<select id="getCodeList" resultType="org.hdcd.common.domain.CodeLabelValue">
+		SELECT code_value AS value,
+			   code_name AS label
+		  FROM code_detail
+		 WHERE group_code = #{groupCode}
+		   AND use_yn = 'Y'
+	  ORDER BY sort_seq
+	</select>
+
+</mapper>

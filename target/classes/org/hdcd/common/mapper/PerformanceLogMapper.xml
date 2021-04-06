@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.hdcd.common.mapper.PerformanceLogMapper">
+
+	<insert id="create">
+		INSERT INTO performance_log
+			 (
+			   signature_name,
+			   signature_type_name,
+			   duration_time
+			 )
+		VALUES
+			 (
+			   #{signatureName},
+			   #{signatureTypeName},
+			   #{durationTime}
+			 )
+	</insert>
+
+	<select id="list" resultType="org.hdcd.common.domain.PerformanceLog">
+		SELECT log_no,
+			   signature_name,
+			   signature_type_name,
+			   duration_time,
+			   reg_date
+		  FROM performance_log
+	  ORDER BY log_no DESC
+	</select>
+
+</mapper>
